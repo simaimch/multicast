@@ -7,7 +7,7 @@ const port = 8451
 var cors = require('cors');
 
 // Parse URL-encoded bodies (as sent by HTML forms)
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }))
 
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json(), cors());
