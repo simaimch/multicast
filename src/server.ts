@@ -13,3 +13,11 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json(), cors());
 
 app.disable('x-powered-by');
+
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+})
+
+app.listen(port, () => {
+    console.log(`Multicast server started at port ${port}`)
+})
