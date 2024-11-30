@@ -25,7 +25,7 @@ jobs:
     - name: Compile TypeScript
       run: tsc
 
-      name: Webpack
+    - name: Webpack
       run: npm run build
 
     - name: Upload to FTP
