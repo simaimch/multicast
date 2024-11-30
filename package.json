@@ -1,0 +1,19 @@
+{
+  "name": "multicast",
+  "version": "0.0.1",
+  "description": "Service to multicast received messages",
+  "main": "dist/server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Christian Hoffmann",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "typescript": "^5.7.2"
+  }
+}
