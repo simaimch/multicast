@@ -2,8 +2,9 @@
   "name": "multicast",
   "version": "0.0.1",
   "description": "Service to multicast received messages",
-  "main": "dist/server.js",
+  "main": "bin/server.js",
   "scripts": {
+    "build": "webpack --config webpack.config.js",
     "start": "node server.js"
   },
   "author": "Christian Hoffmann",
@@ -15,6 +16,8 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.1",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "webpack": "^5.96.1",
+    "webpack-cli": "^5.1.4"
   }
 }

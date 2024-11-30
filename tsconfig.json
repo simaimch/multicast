@@ -5,7 +5,7 @@
 		"sourceMap": false, 
 		"esModuleInterop": true,
 		"moduleResolution": "nodenext",
-		"outDir": "dist"
+		"outDir": "bin"
 	},
 	"include": [
 		"src/**/*",

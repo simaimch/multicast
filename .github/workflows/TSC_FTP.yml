@@ -25,6 +25,9 @@ jobs:
     - name: Compile TypeScript
       run: tsc
 
+      name: Webpack
+      run: npm run build
+
     - name: Upload to FTP
       uses: pressidium/lftp-mirror-action@v1
       with:
@@ -33,8 +36,10 @@ jobs:
         pass: ${{ secrets.FTP_PASSWORD }}
         onlyNewer: true
         reverse: true
-        remoteDir: ${{ secrets.FTP_FOLDER }}
+        localDir: './dist'
+        remoteDir: '${{ secrets.FTP_FOLDER }}/dist'
         options: '--verbose'
+
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@v1.0.3
       with:
