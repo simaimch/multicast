@@ -14,10 +14,10 @@ app.use(express.json(), cors());
 
 app.disable('x-powered-by');
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
+app.use('*', async (req, res, next) => {
+    res.status(404).end(`"404: Service not provided: ${req.originalUrl}"`);
 })
 
-app.listen(port, () => {
+const webserver = app.listen(port, () => {
     console.log(`Multicast server started at port ${port}`)
 })
