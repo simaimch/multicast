@@ -1,4 +1,4 @@
-import express, { } from "express";
+import express, { Request, Response } from "express";
 
 //const express = require('express')
 const app = express()
@@ -14,7 +14,7 @@ app.use(express.json(), cors());
 
 app.disable('x-powered-by');
 
-app.use('*', async (req, res, next) => {
+app.use('*', async (req: Request, res: Response, next) => {
     res.status(404).end(`"404: Service not provided: ${req.originalUrl}"`);
 })
 
