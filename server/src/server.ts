@@ -16,7 +16,7 @@ app.disable('x-powered-by');
 
 // Serve index.html
 app.use((req, res, next) => {
-    if (req.method != 'GET' || req.path.includes('/socket.io/') || /\.(ico|js|css|jpg|png|map|ttf)$/i.test(req.path)) {
+    if (req.method != 'GET' || req.path.includes('/socket.io/') || /\.(ico|js|css|jpg|png|map|ttf|svg)$/i.test(req.path)) {
         next();
     } else {
         res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
