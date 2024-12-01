@@ -14,7 +14,7 @@ app.use(express.json(), cors());
 
 app.disable('x-powered-by');
 
-// Serve Up index.html
+// Serve index.html
 app.use((req, res, next) => {
     if (req.method != 'GET' || req.path.includes('/socket.io/') || /\.(ico|js|css|jpg|png|map|ttf)$/i.test(req.path)) {
         next();
@@ -25,6 +25,10 @@ app.use((req, res, next) => {
         res.sendFile(path.join(__dirname, 'public', 'index.html'));
     }
 });
+
+
+//Serve static assets. Needs to be second to last, just before 404.
+app.use(express.static(path.join(__dirname, "public"), { immutable: true, maxAge: 604800000 /*1 week*/ }));
 
 app.use('*', async (req: Request, res: Response, next) => {
     res.status(404).end(`"404: Service not provided: ${req.originalUrl}"`);
