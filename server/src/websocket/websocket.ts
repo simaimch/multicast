@@ -1,5 +1,7 @@
 import { Socket } from "socket.io";
 
+import { MSG_CONNECT } from '../../../common/socket/messages';
+
 function leaveAllRooms(socket: Socket) {
     const allRooms = socket.rooms;
     for (const room of allRooms)
@@ -12,7 +14,7 @@ export default function websocket(socket: Socket) {
         console.log('user disconnected');
     });
 
-    socket.on('AUTH', (...args) => {
+    socket.on(MSG_CONNECT, (...args) => {
         if (!args[0])
             return;
         const sessionId = args[0].toString() as string;
