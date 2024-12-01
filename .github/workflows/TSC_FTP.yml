@@ -50,3 +50,23 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         script: ${{ secrets.SSH_COMMAND }}
+
+    - name: Install frontend dependencies
+      run: npm install
+      working-directory: frontend
+
+    - name: Build frontend
+      run: npm run build
+      working-directory: frontend
+
+    - name: Upload frontend
+      uses: pressidium/lftp-mirror-action@v1
+      with:
+        host: ${{ secrets.FTP_SERVER }}
+        user: ${{ secrets.FTP_USERNAME }}
+        pass: ${{ secrets.FTP_PASSWORD }}
+        onlyNewer: true
+        reverse: true
+        localDir: './frontend/build'
+        remoteDir: '${{ secrets.FTP_FOLDER }}/dist/public'
+        options: '--verbose'
