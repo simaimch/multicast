@@ -19,16 +19,16 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Install dependencies
-      run: npm install
+    - name: Install server.js dependencies
+      run: server/npm install
 
-    - name: Compile TypeScript
-      run: tsc
+    - name: Compile TS server.js
+      run: server/tsc
 
-    - name: Webpack
-      run: npm run build
+    - name: Webpack server.js
+      run: server/npm run build
 
-    - name: Upload to FTP
+    - name: Upload server.js
       uses: pressidium/lftp-mirror-action@v1
       with:
         host: ${{ secrets.FTP_SERVER }}
@@ -36,11 +36,11 @@ jobs:
         pass: ${{ secrets.FTP_PASSWORD }}
         onlyNewer: true
         reverse: true
-        localDir: './dist'
+        localDir: './server/dist'
         remoteDir: '${{ secrets.FTP_FOLDER }}/dist'
         options: '--verbose'
 
-    - name: executing remote ssh commands using password
+    - name: Restart Server Service
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.FTP_SERVER }}

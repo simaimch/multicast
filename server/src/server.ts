@@ -1,9 +1,8 @@
 import express, { Request, Response } from "express";
 import path from "path";
 
-//const express = require('express')
-const app = express()
-const port = 8719
+const app = express();
+const port = 8719;
 
 var cors = require('cors');
 
