@@ -7,7 +7,7 @@ on:
       - dev
 
 jobs:
-  build:
+  server:
     runs-on: ubuntu-latest
 
     steps:
@@ -50,6 +50,18 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         script: ${{ secrets.SSH_COMMAND }}
+
+  frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20'
 
     - name: Install frontend dependencies
       run: npm install
