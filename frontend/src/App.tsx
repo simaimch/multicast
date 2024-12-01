@@ -3,10 +3,10 @@ import logo from './logo.svg';
 import './App.css';
 import { socket } from './_helpers/serverCommunication/socket';
 
-import UserSession from '../../common/interfaces/UserSession';
+import UserSession from './common/interfaces/UserSession';
 import useLocalStorage from './_helpers/storage/useLocalStorage';
 
-import {MSG_CONNECT} from '../../common/socket/messages';
+import {MSG_CONNECT} from './common/socket/messages';
 
 //#region Session
 	export const emptyUserSession = { username: "", session: "", level: 0 };

@@ -1,6 +1,6 @@
 import { Socket } from "socket.io";
 
-import { MSG_CONNECT } from '../../../common/socket/messages';
+import { MSG_CONNECT } from '../../../frontend/src/common/socket/messages';
 
 function leaveAllRooms(socket: Socket) {
     const allRooms = socket.rooms;
