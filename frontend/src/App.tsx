@@ -21,6 +21,8 @@ function App() {
 
 	const [isConnected, setIsConnected] = useState(socket.connected);
 
+	const [info, setInfo] = useState("");
+
 	useEffect(() => {
 		function onConnect() {
 			setIsConnected(true);
@@ -34,13 +36,19 @@ function App() {
 		socket.on('connect', onConnect);
 		socket.on('disconnect', onDisconnect);
 
+		function info(newInfo:string){
+			setInfo(newInfo);
+		}
+
+		socket.on('INFO', info);
+
 		socket.connect();
 		socket.emit(MSG_CONNECT, userSession.session);
 
 		return () => {
 			socket.off('connect', onConnect);
 			socket.off('disconnect', onDisconnect);
-
+			socket.off('INFO', info);
 
 			socket.disconnect();
 		};
@@ -51,7 +59,14 @@ function App() {
 	return (
 		<div className="App">
 			{
-				isConnected && <div>CONNECTED</div>
+				isConnected && <>
+					<div>CONNECTED</div>
+					<div><button onClick={() => socket.emit('GET_INFO')}>Info</button></div>
+					<div>
+						<h2>Info</h2>
+						{info}
+					</div>
+				</>
 			}
 		</div>
 	);

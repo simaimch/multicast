@@ -21,4 +21,8 @@ export default function websocket(socket: Socket) {
         leaveAllRooms(socket);
         socket.join(sessionId);
     })
+
+    socket.on('GET_INFO', (...args) => {
+        socket.emit("INFO", Array.from(socket.rooms).join(','));
+    });
 }
