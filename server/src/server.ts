@@ -1,5 +1,7 @@
 import express, { Request, Response } from "express";
 import path from "path";
+import { Server } from "socket.io";
+import websocket from "./websocket/websocket";
 
 const app = express();
 const port = 8719;
@@ -16,14 +18,14 @@ app.disable('x-powered-by');
 
 // Serve index.html
 app.use((req, res, next) => {
-    if (req.method != 'GET' || req.path.includes('/socket.io/') || /\.(ico|js|css|jpg|png|map|ttf|svg)$/i.test(req.path)) {
-        next();
-    } else {
-        res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-        res.header('Expires', '-1');
-        res.header('Pragma', 'no-cache');
-        res.sendFile(path.join(__dirname, 'public', 'index.html'));
-    }
+	if (req.method != 'GET' || req.path.includes('/socket.io/') || /\.(ico|js|css|jpg|png|map|ttf|svg)$/i.test(req.path)) {
+		next();
+	} else {
+		res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+		res.header('Expires', '-1');
+		res.header('Pragma', 'no-cache');
+		res.sendFile(path.join(__dirname, 'public', 'index.html'));
+	}
 });
 
 
@@ -31,9 +33,23 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, "public"), { immutable: true, maxAge: 604800000 /*1 week*/ }));
 
 app.use('*', async (req: Request, res: Response, next) => {
-    res.status(404).end(`"404: Service not provided: ${req.originalUrl}"`);
+	res.status(404).end(`"404: Service not provided: ${req.originalUrl}"`);
 })
 
 const webserver = app.listen(port, () => {
-    console.log(`Multicast server started at port ${port}`)
+	console.log(`Multicast server started at port ${port}`)
 })
+
+//#region Websocket
+	var websocketServer: Server = null;
+	try {
+		websocketServer = 
+			new Server(webserver) ;
+		console.log('Starting Websocket server');
+		websocketServer.on('connection', websocket);
+	}
+	catch (e) {
+		console.error('Critical Error starting up websocketServer', e.toString());
+	}
+	export const io = websocketServer;
+//#endregion
