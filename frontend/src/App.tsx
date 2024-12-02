@@ -47,6 +47,7 @@ function App() {
 		socket.on('disconnect', onDisconnect);
 
 		function info(newInfo:string[]){
+			console.log("INFO",newInfo);
 			setRoomData(oldRoomData => {
 				const newRoomDataDict: RoomDataDict = {};
 
@@ -58,6 +59,7 @@ function App() {
 		}
 
 		function msg(roomId:string,message:string){
+			console.log("MSG", roomId, message);
 			setRoomData(oldRoomData => {
 				const newRoomDataDict = { ...oldRoomData };
 				newRoomDataDict[roomId].messages.push(message);
