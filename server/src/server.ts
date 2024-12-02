@@ -12,7 +12,7 @@ var cors = require('cors');
 app.use(express.urlencoded({ extended: true }))
 
 // Parse JSON bodies (as sent by API clients)
-app.use(express.json(), cors());
+app.use(express.json(), cors({origin:'*'}));
 
 app.disable('x-powered-by');
 
@@ -45,7 +45,7 @@ const webserver = app.listen(port, () => {
 	try {
 		websocketServer = 
 			new Server(webserver,{cors:{
-				origin: "http://85.215.242.26:8719",
+				origin: "*",
 				methods: ["GET", "POST"],
 			}}) ;
 
