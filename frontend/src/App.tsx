@@ -33,6 +33,21 @@ function App() {
 		socket.emit(type,args);
 	}
 
+	function info(newInfo: string[]) {
+		const newRoomDataDict: RoomDataDict = {};
+
+		for (const roomId of newInfo)
+			newRoomDataDict[roomId] = roomData[roomId] ?? { messages: [] };
+
+		setRoomData(newRoomDataDict);
+	}
+
+	function msg(roomId: string, message: string) {
+		const newRoomDataDict = { ...roomData };
+		newRoomDataDict[roomId].messages.push(message);
+		setRoomData(newRoomDataDict);
+	}
+
 	useEffect(() => {
 		function onConnect() {
 			setIsConnected(true);
@@ -46,20 +61,7 @@ function App() {
 		socket.on('connect', onConnect);
 		socket.on('disconnect', onDisconnect);
 
-		function info(newInfo:string[]){
-			const newRoomDataDict: RoomDataDict = {};
-
-			for(const roomId of newInfo)
-				newRoomDataDict[roomId] = roomData[roomId] ?? {messages:[]};
-
-			setRoomData(newRoomDataDict);
-		}
-
-		function msg(roomId:string,message:string){
-			const newRoomDataDict = {...roomData};
-			newRoomDataDict[roomId].messages.push(message);
-			setRoomData(newRoomDataDict);
-		}
+		
 
 		socket.on('INFO', info);
 		socket.on('MSG', msg);
