@@ -37,7 +37,7 @@ export default function websocket(socket: Socket) {
 
 	socket.on('JOIN', (...args) => {
 		if (!args[0] || typeof args[0] !== "string"){
-			socket.emit("REQUEST MALFORMED", "JOIN", JSON.parse(args[0]));
+			socket.emit("REQUEST MALFORMED", "JOIN", JSON.stringify(args[0]));
 			return;
 		}
 
