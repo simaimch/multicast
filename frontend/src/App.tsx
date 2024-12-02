@@ -30,7 +30,7 @@ function App() {
 	const roomsDom = Object.entries(roomData).map(([roomId, roomData]) => <Room roomId={roomId} roomData={roomData} sendMessage={sendMessage} key={roomId}></Room>);
 
 	function sendMessage(type:string,args:any[]){
-		socket.emit(type,args);
+		socket.emit(type,...args);
 	}
 
 	useEffect(() => {
