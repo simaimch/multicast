@@ -45,7 +45,7 @@ const webserver = app.listen(port, () => {
 	try {
 		websocketServer = 
 			new Server(webserver,{cors:{
-				origin: "http://85.215.242.26:8719/",
+				origin: "http://85.215.242.26:8719",
 				methods: ["GET", "POST"],
 			}}) ;
 
