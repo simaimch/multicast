@@ -28,7 +28,7 @@ export default function Room(
 		setNewMessage("");
 	}
 
-	const messagesDom = roomData.messages.forEach((message,index)=><p key={index}>{message}</p>);
+	const messagesDom = roomData.messages.map((message,index)=><p key={index}>{index}: {message}</p>);
 
 	return <>
 		<h2>{roomId}</h2>
