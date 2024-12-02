@@ -36,8 +36,10 @@ export default function websocket(socket: Socket) {
 	});
 
 	socket.on('JOIN', (...args) => {
-		if (!args[0] || typeof args[0] !== "string")
+		if (!args[0] || typeof args[0] !== "string"){
+			socket.emit("REQUEST MALFORMED", "JOIN");
 			return;
+		}
 
 		const roomId = args[0];
 

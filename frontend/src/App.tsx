@@ -27,7 +27,7 @@ function App() {
 
 	const [roomData, setRoomData] = useState<RoomDataDict>({});
 
-	const roomsDom = Object.entries(roomData).forEach(([roomId, roomData]) => <Room roomId={roomId} roomData={roomData} sendMessage={sendMessage} key={roomId}></Room>);
+	const roomsDom = Object.entries(roomData).map(([roomId, roomData]) => <Room roomId={roomId} roomData={roomData} sendMessage={sendMessage} key={roomId}></Room>);
 
 	function sendMessage(type:string,args:any[]){
 		socket.emit(type,args);
@@ -53,6 +53,8 @@ function App() {
 
 				for(const roomId of newInfo)
 					newRoomDataDict[roomId] = oldRoomData[roomId] ?? {messages:[]};
+
+				console.log("INFO-Update",newRoomDataDict);
 
 				return newRoomDataDict;
 			});
@@ -83,7 +85,21 @@ function App() {
 		};
 	}, []);
 
-	
+	const [joinRoomId, setJoinRoomId] = useState("");
+
+	const formKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+		if (event.key === 'Enter') {
+			formSubmit();
+		}
+	}
+
+	function formSubmit() {
+		if(!joinRoomId)
+			return;
+		sendMessage("JOIN", [joinRoomId]);
+
+		setJoinRoomId("");
+	}
 
 	return (
 		<div className="App">
@@ -92,6 +108,10 @@ function App() {
 					<div>CONNECTED</div>
 					<div><button onClick={() => socket.emit('GET_INFO')}>Info</button></div>
 					{roomsDom}
+					<h2>JOIN</h2>
+					<div>
+						<input onChange={(e) => setJoinRoomId(e.target.value)} value={joinRoomId} onKeyDown={formKeydown}></input>
+					</div>
 				</>
 			}
 		</div>
