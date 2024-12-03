@@ -122,7 +122,7 @@ function App() {
 					{roomsDom}
 					<h2>JOIN</h2>
 					<div>
-						<input onChange={(e) => setJoinRoomId(e.target.value)} value={joinRoomId} onKeyDown={formKeydown}></input>
+						<input onChange={(e) => setJoinRoomId(e.target.value)} value={joinRoomId} onKeyDown={formKeydown}></input><button onClick={formSubmit}>Join</button>
 					</div>
 				</>
 			}

@@ -34,7 +34,7 @@ export default function Room(
 		<h2>{roomId}</h2>
 		{messagesDom}
 		
-		<div><input onChange={(e) => setNewMessage(e.target.value)} onKeyDown={formKeydown} value={newMessage}/></div>
+		<div><input onChange={(e) => setNewMessage(e.target.value)} onKeyDown={formKeydown} value={newMessage} /><button onClick={formSubmit}>Send</button></div>
 		<hr/>
 	</>;
 }
