@@ -13,46 +13,95 @@ function sendInfo(socket: Socket){
 	socket.emit("INFO", Array.from(socket.rooms));
 }
 
+function roomIdCleaned(roomId:any):(false|string){
+	if(typeof roomId !== "string")
+		return false;
+
+	roomId = roomId.trim();
+
+	if(!roomId)
+		return false;
+
+	var isAlphabetic = (s: string) =>/^[\w\-]+$/.test(s);
+
+	if(!isAlphabetic(roomId))
+		return false;
+
+	if(roomId.length > 50)
+		return false;
+
+	return roomId;
+}
+
 export default function websocket(socket: Socket) {
 	socket.on('disconnect', () => {
 		console.log('user disconnected');
 	});
 
-	socket.on(MSG_CONNECT, (...args) => {
-		if (!args[0] || typeof args[0] !== "string"){
+	socket.on(MSG_CONNECT, (roomId) => {
+		try {
+			roomId = roomIdCleaned(roomId);
+			if (!roomId) {
+				socket.emit("REQUEST MALFORMED", MSG_CONNECT, JSON.stringify(roomId));
+				return;
+			}
 
-		}
-		else
-		{	
-			const sessionId = args[0].toString() as string;
 			leaveAllRooms(socket);
-			socket.join(sessionId);
+			socket.join(roomId);
+			
+			sendInfo(socket);
+		} catch (e) {
+			console.error(e);
 		}
-		sendInfo(socket);
-	})
+	});
 
 	socket.on('GET_INFO', (...args) => {
-		sendInfo(socket);
+		try{
+			sendInfo(socket);
+		} catch (e) {
+			console.error(e);
+		}
 	});
 
 	socket.on('JOIN', (...args) => {
-		if (!args[0] || typeof args[0] !== "string"){
-			socket.emit("REQUEST MALFORMED", "JOIN", JSON.stringify(args[0]));
-			return;
+		try {
+			if (!args[0] || typeof args[0] !== "string"){
+				socket.emit("REQUEST MALFORMED", "JOIN", JSON.stringify(args[0]));
+				return;
+			}
+
+			const roomId = roomIdCleaned(args[0]);
+			if(!roomId){
+				socket.emit("REQUEST MALFORMED", "JOIN", JSON.stringify(args[0]));
+				return;
+			}
+
+
+			socket.join(roomId);
+			sendInfo(socket);
+		}catch (e) {
+			console.error(e);
 		}
-
-		const roomId = args[0];
-
-		socket.join(roomId);
-		sendInfo(socket);
 	});
 
 	socket.on('POST', (roomId, message , callback) => {
 		try{
-			if (!roomId || typeof roomId !== "string")
+			roomId = roomIdCleaned(roomId);
+			if (!roomId){
+				callback({ status: "roomid invalid" });
 				return;
-			if (!message || typeof message !== "string")
+			}
+				
+			if (!message){
+				callback({ status: "empty message" });
 				return;
+			}
+
+			if(JSON.stringify(message).length > 4096){
+				callback({ status: "message too long" });
+				return;
+			}
+				
 
 			socket.to(roomId).emit('MSG',roomId,message);
 			callback({status:"ok"});
