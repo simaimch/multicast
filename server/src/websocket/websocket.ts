@@ -47,15 +47,19 @@ export default function websocket(socket: Socket) {
 		sendInfo(socket);
 	});
 
-	socket.on('POST', (...args) => {
-		if (!args[0] || typeof args[0] !== "string")
-			return;
-		if (!args[1] || typeof args[1] !== "string")
-			return;
+	socket.on('POST', (roomId, message , callback) => {
+		try{
+			if (!roomId || typeof roomId !== "string")
+				return;
+			if (!message || typeof message !== "string")
+				return;
 
-		const roomId = args[0];
-		const message = args[1];
-
-		socket.to(roomId).emit('MSG',roomId,message);
+			socket.to(roomId).emit('MSG',roomId,message);
+			callback({status:"ok"});
+		}
+		catch(e){
+			console.error(e);
+			callback({ status: "err" });
+		}
 	});
 }

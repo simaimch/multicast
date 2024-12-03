@@ -27,10 +27,24 @@ function App() {
 
 	const [roomData, setRoomData] = useState<RoomDataDict>({});
 
-	const roomsDom = Object.entries(roomData).map(([roomId, roomData]) => <Room roomId={roomId} roomData={roomData} sendMessage={sendMessage} key={roomId}></Room>);
+	const roomsDom = Object.entries(roomData).map(([roomId, roomData]) => <Room roomId={roomId} roomData={roomData} postMessage={postMessage} key={roomId}></Room>);
 
-	function sendMessage(type:string,args:any[]){
-		socket.emit(type,...args);
+	function postMessage(room: string, msg: string){
+		sendMessage("POST",[room,msg],(response)=>{
+			if(response?.status == "ok")
+				setRoomData(oldRoomData => {
+					const newRoomDataDict = { ...oldRoomData };
+					newRoomDataDict[room].messages.push(msg);
+					return newRoomDataDict;
+				});
+		});
+	}
+
+	function sendMessage(type: string, args: any[], responseHandler:null|((response:any)=>any)=null){
+		if(typeof responseHandler == "function")
+			socket.emit(type, ...args, responseHandler);
+		else
+			socket.emit(type, ...args);
 	}
 
 	useEffect(() => {
@@ -47,7 +61,6 @@ function App() {
 		socket.on('disconnect', onDisconnect);
 
 		function info(newInfo:string[]){
-			console.log("INFO",newInfo);
 			setRoomData(oldRoomData => {
 				const newRoomDataDict: RoomDataDict = {};
 
@@ -61,7 +74,6 @@ function App() {
 		}
 
 		function msg(roomId:string,message:string){
-			console.log("MSG", roomId, message);
 			setRoomData(oldRoomData => {
 				const newRoomDataDict = { ...oldRoomData };
 				newRoomDataDict[roomId].messages.push(message);

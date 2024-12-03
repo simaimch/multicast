@@ -4,13 +4,13 @@ export default function Room(
 	{
 		roomId,
 		roomData,
-		sendMessage,
+		postMessage,
 	}
 	:
 	{
 		roomId:string,
 		roomData:{messages:string[]},
-		sendMessage: (type: string, args: any[])=>any,
+		postMessage: (room: string, msg: string) =>any,
 	}
 ){
 
@@ -23,7 +23,7 @@ export default function Room(
 	}
 
 	function formSubmit() {
-		sendMessage("POST",[roomId,newMessage]);
+		postMessage(roomId,newMessage);
 
 		setNewMessage("");
 	}
