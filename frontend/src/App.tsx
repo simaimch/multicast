@@ -7,6 +7,7 @@ import useLocalStorage from './_helpers/storage/useLocalStorage';
 
 import {MSG_CONNECT} from './common/socket/messages';
 import Room from './Room/Room';
+import { ServerRoom } from './settings';
 
 //#region Session
 	export const emptyUserSession = { username: "", session: "", level: 0 };
@@ -85,7 +86,7 @@ function App() {
 		socket.on('MSG', msg);
 
 		socket.connect();
-		socket.emit(MSG_CONNECT, userSession.session);
+		socket.emit(MSG_CONNECT, ServerRoom);
 
 		return () => {
 			socket.off('connect', onConnect);

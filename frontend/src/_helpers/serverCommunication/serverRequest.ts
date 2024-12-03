@@ -1,7 +1,8 @@
-const server = process.env.NODE_ENV === 'production' ? "http://85.215.242.26:8719/" : "http://85.215.242.26:8719/";
+import { ServerAddress } from "../../settings";
+
 
 export async function serverRequest<T>(path:string, data:any):Promise<T|string>{
-	const url = server + path;
+	const url = ServerAddress + path;
 
 	return new Promise<T|string>((resolve, reject) => {
 
