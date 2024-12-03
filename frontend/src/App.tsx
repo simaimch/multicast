@@ -31,7 +31,7 @@ function App() {
 
 	function postMessage(room: string, msg: string){
 		sendMessage("POST",[room,msg],(response)=>{
-			if(response?.status == "ok")
+			if(response?.status === "ok")
 				setRoomData(oldRoomData => {
 					const newRoomDataDict = { ...oldRoomData };
 					newRoomDataDict[room].messages.push(msg);
