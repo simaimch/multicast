@@ -6,6 +6,12 @@ import websocket from "./websocket/websocket";
 const app = express();
 const port = 8719;
 
+const fs = require('fs');
+const https = require('https');
+
+var privateKey = fs.readFileSync('edufant_eu_private_key.key');
+var certificate = fs.readFileSync('edufant_eu_ssl_certificate.cer');
+
 var cors = require('cors');
 
 // Parse URL-encoded bodies (as sent by HTML forms)
@@ -36,9 +42,13 @@ app.use('*', async (req: Request, res: Response, next) => {
 	res.status(404).end(`"404: Service not provided: ${req.originalUrl}"`);
 })
 
-const webserver = app.listen(port, () => {
+/*const webserver = app.listen(port, () => {
 	console.log(`Multicast server started at port ${port}`)
-})
+})*/
+const webserver = https.createServer({
+	key: privateKey,
+	cert: certificate
+}, app).listen(port);
 
 //#region Websocket
 	var websocketServer: Server = null;

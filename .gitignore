@@ -8,6 +8,8 @@
 # testing
 /coverage
 *.service
+*.key
+*.cer
 
 # production
 */bin
