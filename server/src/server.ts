@@ -9,8 +9,12 @@ const port = 8719;
 const fs = require('fs');
 const https = require('https');
 
-var privateKey = fs.readFileSync('edufant_eu_private_key.key');
-var certificate = fs.readFileSync('edufant_eu_ssl_certificate.cer');
+try{
+	var privateKey = fs.readFileSync('edufant_eu_private_key.key');
+	var certificate = fs.readFileSync('edufant_eu_ssl_certificate.cer');
+}catch(e){
+	process.exit(14);
+}
 
 var cors = require('cors');
 
