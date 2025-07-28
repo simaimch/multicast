@@ -13,6 +13,7 @@ try{
 	var privateKey = fs.readFileSync('edufant_eu_private_key.key');
 	var certificate = fs.readFileSync('edufant_eu_ssl_certificate.cer');
 }catch(e){
+	console.error(e.toString());
 	process.exit(14);
 }
 
