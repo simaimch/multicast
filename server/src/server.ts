@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import path from "path";
 import { Server } from "socket.io";
 import websocket from "./websocket/websocket";
+import { CertificateCertPath, CertificateKeyPath } from "./_config/Config";
 
 const app = express();
 const port = 8719;
@@ -10,8 +11,8 @@ const fs = require('fs');
 const https = require('https');
 
 try{
-	var privateKey = fs.readFileSync('/var/www/edufant_eu_private_key.key');
-	var certificate = fs.readFileSync('/var/www/edufant_eu_ssl_certificate.cer');
+	var privateKey = fs.readFileSync(CertificateKeyPath);
+	var certificate = fs.readFileSync(CertificateCertPath);
 }catch(e){
 	console.error(e.toString());
 	process.exit(14);
